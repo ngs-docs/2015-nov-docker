@@ -63,7 +63,7 @@ defaults to ending in a ``$ ``), *this* prompt has placed you inside
 your running Docker container.  This container is running *inside*
 your other Ubuntu machine, and its file system and process space is
 completely isolated from the "parent" machine.  Note in partcular that
-you are 'root' inside the Docker image, while you're still user 'ubuntu'
+you are 'root' inside the Docker container, while you're still user 'ubuntu'
 on the AWS machine.
 
 This is a blank Ubuntu machine. You can play around in here a bit, if you
@@ -78,10 +78,24 @@ This will place you back at your EC2 prompt.
 At this point your docker container is shut down and you are placed
 back at your EC2 prompt.  Importantly, everything you did to the file
 system in the container is basically gone at this point - container
-contents don't persist unless you build an image.  You can verify this
+contents don't affect the image from which they derive.  You can verify this
 by re-running the ``docker run -it ubuntu:14.04``, adding a file, and
 then exiting; if you run the same image, the file system will be
 missing the added file.
+
+
+Cleaning up
+-----------
+
+By default, docker saves a record of containers that have been run, which you can see with ``docker ps -a``. If you wish to later delete an image, docker will complain if any dependent containers still exist. Here's a remedy:
+
+   docker stop $(docker ps -a -q) #needed if you have running containers
+   docker rm $(docker ps -a -q)
+
+Alternatively, one can add the ``--rm`` flag when running interactively to avoid having to remove the containers later.
+
+Persisting changes
+-----------
 
 See ``docker
 commit`` and the `Docker image docs
