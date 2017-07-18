@@ -270,7 +270,7 @@ First, put the command in a shell script::
    cd /home/ubuntu/data
    cat <<EOF > do-assemble.sh
    #! /bin/bash
-   rm -fr /data/ecoli
+   rm -fr /mydata/ecoli
    /home/megahit/megahit --12 /mydata/*.pe.fq.gz \
                         -r /mydata/*.se.fq.gz  \
                         -o /mydata/ecoli -t 4
